@@ -1,48 +1,45 @@
+import ThemeContext from '../../context/ThemeContext'
+
 import {
-  FailedView,
-  FailedImage,
-  FailedHeading,
-  FailedNote,
-  RetryButton,
+  FailureContainer,
+  ErrorMsg,
+  Suggestion,
+  FailureImage,
+  RetryButtonInFailure,
 } from './styledComponents'
 
-import ThemeAndVideoContext from '../../context/ThemeAndVideoContext'
-
 const FailureView = props => {
-  const {onRetry} = props
+  const {retryButtonClicked} = props
 
-  const onClickRetry = () => {
-    onRetry()
+  const onClickRetryButton = () => {
+    retryButtonClicked()
   }
 
   return (
-    <ThemeAndVideoContext.Consumer>
+    <ThemeContext.Consumer>
       {value => {
         const {isDarkTheme} = value
-        const headingColor = isDarkTheme ? '#f1f5f9' : '#1e293b'
-        const noteColor = isDarkTheme ? '#e2e8f0' : '#475569'
-
-        const failureImageUrl = isDarkTheme
+        const failureImg = isDarkTheme
           ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
           : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
 
         return (
-          <FailedView>
-            <FailedImage src={failureImageUrl} alt="failure view" />
-            <FailedHeading headingColor={headingColor}>
+          <FailureContainer>
+            <FailureImage src={failureImg} alt="failure view" />
+            <ErrorMsg darkMode={isDarkTheme}>
               Oops! Something Went Wrong
-            </FailedHeading>
-            <FailedNote noteColor={noteColor}>
-              We are having some trouble to complete your request. <br /> Please
-              try again later.
-            </FailedNote>
-            <RetryButton type="button" onClick={onClickRetry}>
+            </ErrorMsg>
+            <Suggestion darkMode={isDarkTheme}>
+              We are having some trouble to complete your request. Please try
+              again.
+            </Suggestion>
+            <RetryButtonInFailure type="button" onClick={onClickRetryButton}>
               Retry
-            </RetryButton>
-          </FailedView>
+            </RetryButtonInFailure>
+          </FailureContainer>
         )
       }}
-    </ThemeAndVideoContext.Consumer>
+    </ThemeContext.Consumer>
   )
 }
 
